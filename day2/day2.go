@@ -1,4 +1,4 @@
-package main
+package day2
 
 import (
 	"bufio"
@@ -8,29 +8,29 @@ import (
 	"strings"
 )
 
-func main() {
+func Day2() {
 	fmt.Println("--- Day 2: Cube Conundrum ---")
 	part1Answer := getPart1Answer()
-	fmt.Println("Par1:", part1Answer)
+	fmt.Println("Part1:", part1Answer)
 	part2Answer := getPart2Answer()
 	fmt.Println("Part2:", part2Answer)
 }
 
 func getPart2Answer() int {
-    lines := getInput()
-    result := 0
-    for _, line := range lines {
-        result += getPower(line)
-    }
-    return result
+	lines := getInput()
+	result := 0
+	for _, line := range lines {
+		result += getPower(line)
+	}
+	return result
 }
 
 func getPower(line string) int {
 	gameInfo := strings.Split(line, ":")
 	hands := strings.Split(gameInfo[1], ";")
-    maxBlue := 0
-    maxGreen := 0
-    maxRed := 0
+	maxBlue := 0
+	maxGreen := 0
+	maxRed := 0
 	for _, hand := range hands {
 		numbers := getDieNumber(hand)
 		maxBlue = max(maxBlue, numbers[0])
@@ -89,7 +89,7 @@ func getDieNumber(hand string) [3]int {
 
 func getInput() []string {
 	lines := []string{}
-	file, err := os.Open("input.txt")
+	file, err := os.Open("day2/input.txt")
 	if err != nil {
 		fmt.Println("error reading input")
 		return lines
