@@ -10,14 +10,14 @@ import (
 
 func Day2() {
 	fmt.Println("--- Day 2: Cube Conundrum ---")
-	part1Answer := getPart1Answer()
+	lines := getInput()
+	part1Answer := getPart1Answer(lines)
 	fmt.Println("Part1:", part1Answer)
-	part2Answer := getPart2Answer()
+	part2Answer := getPart2Answer(lines)
 	fmt.Println("Part2:", part2Answer)
 }
 
-func getPart2Answer() int {
-	lines := getInput()
+func getPart2Answer(lines []string) int {
 	result := 0
 	for _, line := range lines {
 		result += getPower(line)
@@ -40,8 +40,7 @@ func getPower(line string) int {
 	return maxBlue * maxGreen * maxRed
 }
 
-func getPart1Answer() int {
-	lines := getInput()
+func getPart1Answer(lines []string) int {
 	result := 0
 	for _, line := range lines {
 		if game_id, ok := isPossible(line); ok {

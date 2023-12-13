@@ -11,14 +11,14 @@ import (
 
 func Day1() {
 	fmt.Println("--- Day 1: Trebuchet?! ---")
-	part1Answer := getPart1Answer()
+	lines := getInput()
+	part1Answer := getPart1Answer(lines)
 	fmt.Println("Part1:", part1Answer)
-	part2Answer := getPart2Answer()
+	part2Answer := getPart2Answer(lines)
 	fmt.Println("Part2:", part2Answer)
 }
 
-func getPart2Answer() int {
-	lines := getInput()
+func getPart2Answer(lines []string) int {
 	result := 0
 	numbersMap := map[string]int{
 		"one":   1,
@@ -113,8 +113,7 @@ func findLastSpelledNumber(line string, numbersMap map[string]int) (int, int) {
 	return len(line) - 1 - leftMost, number
 }
 
-func getPart1Answer() int {
-	lines := getInput()
+func getPart1Answer(lines []string) int {
 	result := 0
 	for _, line := range lines {
 		left := -1

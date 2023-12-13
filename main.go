@@ -3,6 +3,7 @@ package main
 import (
 	day1 "adventofcode/day1"
 	day2 "adventofcode/day2"
+	day3 "adventofcode/day3"
 	"bufio"
 	"fmt"
 	"os"
@@ -30,6 +31,8 @@ func main() {
 				day1.Day1()
 			case 2:
 				day2.Day2()
+			case 3:
+				day3.Day3()
 			default:
 				fmt.Println("Invalid input")
 		}
