@@ -4,6 +4,7 @@ import (
 	day1 "adventofcode/day1"
 	day2 "adventofcode/day2"
 	day3 "adventofcode/day3"
+	day4 "adventofcode/day4"
 	"bufio"
 	"fmt"
 	"os"
@@ -27,14 +28,16 @@ func main() {
 			continue
 		}
 		switch dayNumber {
-			case 1:
-				day1.Day1()
-			case 2:
-				day2.Day2()
-			case 3:
-				day3.Day3()
-			default:
-				fmt.Println("Invalid input")
+		case 1:
+			day1.Day1()
+		case 2:
+			day2.Day2()
+		case 3:
+			day3.Day3()
+		case 4:
+			day4.Day4()
+		default:
+			fmt.Println("Invalid input")
 		}
 		fmt.Println()
 	}
