@@ -8,6 +8,7 @@ import (
 	day5 "adventofcode/day5"
 	day6 "adventofcode/day6"
 	day7 "adventofcode/day7"
+	day8 "adventofcode/day8"
 	"bufio"
 	"fmt"
 	"os"
@@ -45,6 +46,8 @@ func main() {
 			day6.Day6()
 		case 7:
 			day7.Day7()
+		case 8:
+			day8.Day8()
 		default:
 			fmt.Println("Invalid input")
 		}
