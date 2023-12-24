@@ -6,6 +6,7 @@ import (
 	day11 "adventofcode/day11"
 	day12 "adventofcode/day12"
 	day13 "adventofcode/day13"
+	day14 "adventofcode/day14"
 	day2 "adventofcode/day2"
 	day3 "adventofcode/day3"
 	day4 "adventofcode/day4"
@@ -63,6 +64,8 @@ func main() {
 			day12.Day12()
 		case 13:
 			day13.Day13()
+		case 14:
+			day14.Day14()
 		default:
 			fmt.Println("Invalid input")
 		}
