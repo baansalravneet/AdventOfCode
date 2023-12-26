@@ -59,18 +59,16 @@ func runDjikstra(grid [][]int) int {
 	heap.Init(pq)
 	for len(*pq) > 0 {
 		current := heap.Pop(pq).(state)
-		fmt.Println(current)
 		if current.x == n-1 && current.y == n-1 {
 			return current.distance
 		}
 		currentDistance := current.distance
 		current.distance = 0
 		if _, ok := visited[current]; ok {
-			fmt.Println("stateMatched", current)
 			continue
 		}
 		visited[current] = true
-		if current.dx != 0 && current.dy != 0 && current.moves <= 3 {
+		if (current.dx != 0 || current.dy != 0) && current.moves <= 2 {
 			nx := current.x + current.dx
 			ny := current.y + current.dy
 			if nx >= 0 && nx < n && ny >= 0 && ny < n {
