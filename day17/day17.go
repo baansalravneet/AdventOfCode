@@ -17,23 +17,22 @@ func Day17() {
 }
 
 func getPart1Answer(lines []string) int {
-	n := len(lines)
-	grid := make([][]int, n)
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			grid[i] = append(grid[i], int(lines[i][j]-'0'))
-		}
-	}
-	return runDjikstra(grid)
+	grid := getGrid(lines)
+	return runDjikstra(grid, 1, 3)
 }
 
 type state struct {
-	x        int
-	y        int
-	dx       int
-	dy       int
-	moves    int
-	distance int
+	x          int
+	y          int
+	dx         int
+	dy         int
+	moves      int
+	distance   int
+	totalMoves int
+}
+
+func (s state) getStateKey() string {
+	return fmt.Sprintf("%d,%d,%d,%d,%d", s.x, s.y, s.dx, s.dy, s.moves)
 }
 
 type minheap []state
@@ -52,35 +51,40 @@ func (h *minheap) Pop() interface{} {
 	return x
 }
 
-func runDjikstra(grid [][]int) int {
+func runDjikstra(grid [][]int, minMoves, maxMoves int) int {
 	n := len(grid)
-	visited := make(map[state]bool)
-	pq := &minheap{state{x: 0, y: 0, dx: 0, dy: 0, moves: 0}}
+	m := len(grid[0])
+	visited := make(map[string]bool)
+	pq := &minheap{state{x: 0, y: 0, dx: 0, dy: 0, moves: 0, totalMoves: 0}}
 	heap.Init(pq)
 	for len(*pq) > 0 {
 		current := heap.Pop(pq).(state)
-		if current.x == n-1 && current.y == n-1 {
+		if current.x == n-1 && current.y == m-1 && current.moves >= minMoves && current.moves <= maxMoves {
 			return current.distance
 		}
 		currentDistance := current.distance
-		current.distance = 0
-		if _, ok := visited[current]; ok {
+		key := current.getStateKey()
+		if _, ok := visited[key]; ok {
 			continue
 		}
-		visited[current] = true
-		if (current.dx != 0 || current.dy != 0) && current.moves <= 2 {
+		visited[key] = true
+		if (current.dx != 0 || current.dy != 0) && current.moves <= maxMoves-1 {
 			nx := current.x + current.dx
 			ny := current.y + current.dy
-			if nx >= 0 && nx < n && ny >= 0 && ny < n {
+			if nx >= 0 && nx < n && ny >= 0 && ny < m {
 				heap.Push(pq, state{
-					x:        nx,
-					y:        ny,
-					dx:       current.dx,
-					dy:       current.dy,
-					moves:    current.moves + 1,
-					distance: currentDistance + grid[nx][ny],
+					x:          nx,
+					y:          ny,
+					dx:         current.dx,
+					dy:         current.dy,
+					moves:      current.moves + 1,
+					distance:   currentDistance + grid[nx][ny],
+					totalMoves: current.totalMoves + 1,
 				})
 			}
+		}
+		if current.totalMoves != 0 && current.moves < minMoves {
+			continue
 		}
 		for _, d := range [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}} {
 			if d[0] == current.dx && d[1] == current.dy {
@@ -91,14 +95,15 @@ func runDjikstra(grid [][]int) int {
 			}
 			nx := current.x + d[0]
 			ny := current.y + d[1]
-			if nx >= 0 && nx < n && ny >= 0 && ny < n {
+			if nx >= 0 && nx < n && ny >= 0 && ny < m {
 				heap.Push(pq, state{
-					x:        nx,
-					y:        ny,
-					dx:       d[0],
-					dy:       d[1],
-					moves:    1,
-					distance: currentDistance + grid[nx][ny],
+					x:          nx,
+					y:          ny,
+					dx:         d[0],
+					dy:         d[1],
+					moves:      1,
+					distance:   currentDistance + grid[nx][ny],
+					totalMoves: current.totalMoves + 1,
 				})
 			}
 		}
@@ -106,8 +111,21 @@ func runDjikstra(grid [][]int) int {
 	return 0
 }
 
+func getGrid(lines []string) [][]int {
+	n := len(lines)
+	m := len(lines[0])
+	grid := make([][]int, n)
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			grid[i] = append(grid[i], int(lines[i][j]-'0'))
+		}
+	}
+	return grid
+}
+
 func getPart2Answer(lines []string) int {
-	return 0
+	grid := getGrid(lines)
+	return runDjikstra(grid, 4, 10)
 }
 
 func getInput() []string {
