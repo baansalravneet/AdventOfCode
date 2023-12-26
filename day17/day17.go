@@ -10,14 +10,14 @@ import (
 func Day17() {
 	fmt.Println("--- Day 17: Clumsy Crucible ---")
 	lines := getInput()
-	part1Answer := getPart1Answer(lines)
+	grid := getGrid(lines)
+	part1Answer := getPart1Answer(grid)
 	fmt.Println("Part1:", part1Answer)
-	part2Answer := getPart2Answer(lines)
+	part2Answer := getPart2Answer(grid)
 	fmt.Println("Part2:", part2Answer)
 }
 
-func getPart1Answer(lines []string) int {
-	grid := getGrid(lines)
+func getPart1Answer(grid [][]int) int {
 	return runDjikstra(grid, 1, 3)
 }
 
@@ -123,8 +123,7 @@ func getGrid(lines []string) [][]int {
 	return grid
 }
 
-func getPart2Answer(lines []string) int {
-	grid := getGrid(lines)
+func getPart2Answer(grid [][]int) int {
 	return runDjikstra(grid, 4, 10)
 }
 
