@@ -189,10 +189,10 @@ func getPart1Answer(lines []string) int {
 	return countHigh * countLow
 }
 
-// we can reverse engineer that rx is fed by only kz
+// we can reverse engineer and see that rx is fed by only kz
 // kz is a conjunction module which is fed by bg, sj, qq, and ls
-// we can record the cycle lengths of each of these for
-// when they emit a high pulse for kz and take LCM
+// we can record the cycle lengths for each of these for
+// when they emit a high pulse and take LCM
 func getPart2Answer(lines []string) int {
 	trackModules := []string{"bg", "qq", "sj", "ls"}
 	lcm := []int{}
