@@ -6,18 +6,6 @@ import (
 	"os"
 )
 
-func countAllPoints(lines []string) map[string]bool {
-	count := make(map[string]bool)
-	for i := range lines {
-		for j := range lines[i] {
-			if lines[i][j] == '.' || lines[i][j] == 'S' {
-				count[fmt.Sprintf("%d,%d", i, j)] = true
-			}
-		}
-	}
-	return count
-}
-
 func Day21() {
 	fmt.Println("--- Day 21: Step Counter ---")
 	lines := getInput()
@@ -46,11 +34,11 @@ func getPart2Answer(lines []string) int {
 	x, y := findS(lines)
 	steps := 26501365
 	size := len(lines)
-	reachWidth := (steps/size) - 1
+	reachWidth := (steps / size) - 1
 
 	gridsWithOddStartingSteps := ((reachWidth/2)*2 + 1)
 	gridsWithOddStartingSteps = gridsWithOddStartingSteps * gridsWithOddStartingSteps
-	gridsWithEvenStartingSteps := (((reachWidth+1)/2)*2)
+	gridsWithEvenStartingSteps := (((reachWidth + 1) / 2) * 2)
 	gridsWithEvenStartingSteps = gridsWithEvenStartingSteps * gridsWithEvenStartingSteps
 
 	oddPoints := findCover(lines, x, y, size*2+1)
@@ -101,7 +89,7 @@ func findCover(lines []string, x, y, steps int) int {
 		fmt.Sprintf(keyFormat, x, y): true,
 	}
 	answer := make(map[string]bool)
-	bfsQueue := [][]int{[]int{x, y, steps}}
+	bfsQueue := [][]int{{x, y, steps}}
 	for len(bfsQueue) > 0 {
 		current := bfsQueue[0]
 		bfsQueue = bfsQueue[1:]
