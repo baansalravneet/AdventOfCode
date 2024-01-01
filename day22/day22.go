@@ -53,9 +53,7 @@ func getPart2Answer(lines []string) int {
 	inDegrees := getInDegrees(brickDependencies)
 	result := 0
 	for i := range inDegrees {
-		copied := make([]int, len(inDegrees))
-		copy(copied, inDegrees)
-		result += removeThis(i, brickDependencies, copied)
+		result += removeThis(i, brickDependencies, append([]int{}, inDegrees...))
 	}
 	return result
 }
