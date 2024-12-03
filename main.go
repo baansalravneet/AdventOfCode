@@ -2,6 +2,7 @@ package main
 
 import (
 	day1 "adventofcode/day1"
+	day3 "adventofcode/day3"
 	"bufio"
 	"fmt"
 	"os"
@@ -15,6 +16,7 @@ func main() {
 		fmt.Print()
 		fmt.Println("Enter day number to see result")
 		fmt.Print(">")
+		fmt.Print("> ")
 		input, _ := reader.ReadString('\n')
 		input = strings.Replace(input, "\n", "", -1)
 		fmt.Println()
@@ -27,6 +29,8 @@ func main() {
 		switch dayNumber {
 		case 1:
 			day1.Day1()
+		case 3:
+			day3.Day3()
 		default:
 			fmt.Println("Invalid input")
 		}
