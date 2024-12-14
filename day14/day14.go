@@ -6,6 +6,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 func Day14() {
@@ -17,17 +18,12 @@ func Day14() {
 	fmt.Println("Part2:", part2Answer)
 }
 
-func getPart1Answer(lines []string) int {
-	matcher := regexp.MustCompile(`p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)`)
-	boundX, boundY := 101, 103
-	seconds := 100
+const boundX, boundY = 101, 103
+
+func getDangerScore(xPos, yPos, xVel, yVel []int, seconds int) int {
 	q1, q2, q3, q4 := 0, 0, 0, 0
-	for _, line := range lines {
-		match := matcher.FindAllStringSubmatch(line, 5)
-		x, _ := strconv.Atoi(match[0][1])
-		y, _ := strconv.Atoi(match[0][2])
-		vx, _ := strconv.Atoi(match[0][3])
-		vy, _ := strconv.Atoi(match[0][4])
+	for i := 0; i < len(xPos); i++ {
+		x, y, vx, vy := xPos[i], yPos[i], xVel[i], yVel[i]
 		finalX := (((x + vx*seconds) % boundX) + boundX) % boundX
 		finalY := (((y + vy*seconds) % boundY) + boundY) % boundY
 		if finalX < boundX/2 && finalY < boundY/2 {
@@ -43,41 +39,46 @@ func getPart1Answer(lines []string) int {
 	return q1 * q2 * q3 * q4
 }
 
-func getPart2Answer(lines []string) int {
+func getPositionsAndVelocities(lines []string) ([]int, []int, []int, []int) {
 	matcher := regexp.MustCompile(`p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)`)
-	boundX, boundY := 101, 103
-	positions, velocities := make([][2]int, len(lines)*2), make([][2]int, len(lines)*2)
+	xPos, yPos, xVel, yVel := []int{}, []int{}, []int{}, []int{}
 	for _, line := range lines {
 		match := matcher.FindAllStringSubmatch(line, 5)
 		x, _ := strconv.Atoi(match[0][1])
 		y, _ := strconv.Atoi(match[0][2])
 		vx, _ := strconv.Atoi(match[0][3])
 		vy, _ := strconv.Atoi(match[0][4])
-		positions = append(positions, [2]int{x, y})
-		velocities = append(velocities, [2]int{vx, vy})
+		xPos, yPos = append(xPos, x), append(yPos, y)
+		xVel, yVel = append(xVel, vx), append(yVel, vy)
 	}
-	grid := make([][]byte, boundY)
-	for i := range grid {
-		grid[i] = make([]byte, boundX)
-		for j := range grid[i] {
-			grid[i][j] = ' '
+	return xPos, yPos, xVel, yVel
+}
+
+func getPart1Answer(lines []string) int {
+	xPos, yPos, xVel, yVel := getPositionsAndVelocities(lines)
+	return getDangerScore(xPos, yPos, xVel, yVel, 100)
+}
+
+func getPart2Answer(lines []string) int {
+	xPos, yPos, xVel, yVel := getPositionsAndVelocities(lines)
+	grid := make([][]byte, boundX)
+	for i := 0; i < boundX; i++ {
+		grid[i] = make([]byte, boundY)
+	}
+	for seconds := 0; seconds < boundX*boundY; seconds++ {
+		for i := 0; i < len(xPos); i++ {
+			x := (((xPos[i] + xVel[i]*seconds) % boundX) + boundX) % boundX
+			y := (((yPos[i] + yVel[i]*seconds) % boundY) + boundY) % boundY
+			grid[x][y] = '#'
 		}
-	}
-	for it := 0; it < 101*103; it++ {
-		for i := 0; i < boundY; i++ {
-			for j := 0; j < boundX; j++ {
+		for i := range grid {
+			if strings.Contains(string(grid[i]), "###########") {
+				return seconds
+			}
+			for j := range grid[i] {
 				grid[i][j] = ' '
 			}
 		}
-		for i := 0; i < len(positions); i++ {
-			x := ((positions[i][0]+velocities[i][0]*it)%boundX + boundX) % boundX
-			y := ((positions[i][1]+velocities[i][1]*it)%boundY + boundY) % boundY
-			grid[y][x] = '#'
-		}
-		for i := 0; i < boundY; i++ {
-			// fmt.Println(string(grid[i]))
-		}
-		// fmt.Println(it, "========================")
 	}
 	return 0
 }
