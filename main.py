@@ -7,7 +7,8 @@ def get_input(day, is_debug):
     else:
         filepath = f'inputs/day{day}/input.txt'
     with open(filepath) as f:
-        return f.readlines()
+        for line in f:
+            yield line.rstrip('\n')
 
 def main():
     parser = argparse.ArgumentParser(description='Advent of Code')
@@ -33,7 +34,7 @@ def main():
         return
 
     try:
-        func(is_debug)
+        func(get_input(day, is_debug))
     except Exception as e:
         print("Could not call the solution function", e)
 

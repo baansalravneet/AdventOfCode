@@ -1,22 +1,10 @@
-from typing import List
-from typing import Tuple
-
-def get_input(is_debug):
-    if is_debug:
-        filepath = f'inputs/day1/example.txt'
-    else:
-        filepath = f'inputs/day1/input.txt'
-    with open(filepath) as f:
-        for line in f:
-            yield line.rstrip('\n')
-
-def get_parsed_input(is_debug):
+def get_parsed_input(file_input):
     input = []
-    for line in get_input(is_debug):
+    for line in file_input:
         input.append((line[0], int(line[1:])))
     return input
 
-def task1(input: List[Tuple[chr, int]]) -> int:
+def task1(input) -> int:
     current, count = 50, 0
     for direction, distance in input:
         distance = distance if direction == 'R' else -distance
@@ -24,7 +12,7 @@ def task1(input: List[Tuple[chr, int]]) -> int:
         count += 1 if current == 0 else 0
     return count
 
-def task2(input: List[str]) -> int:
+def task2(input) -> int:
     current, count = 50, 0
     for direction, distance in input:
         if distance > 100:
@@ -37,8 +25,8 @@ def task2(input: List[str]) -> int:
         count += 1 if current == 0 else 0
     return count
 
-def solution(is_debug: bool):
+def solution(file_input):
     print("--- Day 1: Secret Entrance ---")
-    input = get_parsed_input(is_debug)
+    input = get_parsed_input(file_input)
     print("Task 1:", task1(input))
     print("Task 2:", task2(input))
