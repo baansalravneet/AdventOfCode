@@ -1,5 +1,6 @@
 import argparse
 import importlib
+import traceback
 
 def get_input(day, is_debug):
     if is_debug:
@@ -37,6 +38,7 @@ def main():
         func(get_input(day, is_debug))
     except Exception as e:
         print("Could not call the solution function", e)
+        print(traceback.format_exc())
 
 if __name__ == '__main__':
     main()
